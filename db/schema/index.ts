@@ -1,4 +1,4 @@
-import { pgTable, varchar, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, text, timestamp, primaryKey } from 'drizzle-orm/pg-core';
 
 export const questions = pgTable('questions', {
   clerkUserId: varchar('clerk_user_id', { length: 255 }).notNull(),
@@ -7,4 +7,8 @@ export const questions = pgTable('questions', {
   date: timestamp('date', { withTimezone: true }).defaultNow().notNull(),
   pattern: text('pattern').notNull(),
   topics: text('topics').array(),
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.clerkUserId, table.leetcodeQuestionUrl] }),
+  }
 });
